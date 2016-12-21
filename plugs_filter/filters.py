@@ -1,5 +1,5 @@
 """
-Solo core filters
+Filters
 """
 
 from django_filters.filters import Filter

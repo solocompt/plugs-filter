@@ -7,8 +7,8 @@ from django.db.models.constants import LOOKUP_SEP
 
 from django_filters import filterset
 
-from solo.core.filters import AutoFilters
-from solo.core import utils
+from plugs_filter.filters import AutoFilters
+from plugs_filter import utils
 
 class Meta(filterset.FilterSetMetaclass):
     """
