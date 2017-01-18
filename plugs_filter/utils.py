@@ -9,6 +9,7 @@ LOOKUP_TABLE = {
     fields.related.ForeignKey : ['gt', 'lt', 'gte', 'lte', 'in'],
     fields.AutoField : ['gt', 'lt', 'gte', 'lte', 'in'],
     fields.IntegerField : ['gt', 'lt', 'in'],
+    fields.DecimalField : ['gt', 'lt', 'in'],
     fields.CharField : ['contains', 'icontains'],
     fields.DateTimeField: ['gt', 'lt'],
     fields.BooleanField: ['in'],
