@@ -46,32 +46,27 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 setup(
     name='plugs-filter',
     version=version,
-    description="""Your project description goes here""",
+    description="""API auto filtering and ordering""",
     long_description=readme + '\n\n' + history,
-    author='Ricardo Lobo',
-    author_email='ricardolobo@soloweb.pt',
-    url='https://github.com/ricardolobo/plugs-filter',
+    author='Solo',
+    author_email='geral@solo.com.pt',
+    url='https://github.com/solocompt/plugs-filter',
     packages=[
         'plugs_filter',
     ],
     include_package_data=True,
     install_requires=[
-        'django_filter==0.13.0'
+        'django_filter==1.0.4'
     ],
     license="MIT",
     zip_safe=False,
     keywords='plugs-filter',
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Framework :: Django',
-        'Framework :: Django :: 1.9',
+        'Framework :: Django :: 1.11',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3'
     ],
 )
