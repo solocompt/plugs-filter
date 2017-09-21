@@ -4,8 +4,10 @@ Filtering
 
 from django.utils import six
 from django.db.models.constants import LOOKUP_SEP
+from django.db import models
 
-from django_filters import filterset
+from django_filters import filterset, BaseInFilter, ChoiceFilter
+from django_filters.utils import try_dbfield
 from django_filters.rest_framework.filterset import FilterSet as RESTFrameworkFilterSet
 
 from plugs_filter.filters import AutoFilters
@@ -60,4 +62,50 @@ class Meta(filterset.FilterSetMetaclass):
         return new_class
 
 class FilterSet(six.with_metaclass(Meta, RESTFrameworkFilterSet)):
-    pass
+
+    # this is required because we need to override
+    # the filter type if it has not_in lookup
+    @classmethod
+    def filter_for_lookup(cls, f, lookup_type):
+        DEFAULTS = dict(cls.FILTER_DEFAULTS)
+        if hasattr(cls, '_meta'):
+            DEFAULTS.update(cls._meta.filter_overrides)
+
+        data = try_dbfield(DEFAULTS.get, f.__class__) or {}
+        filter_class = data.get('filter_class')
+        params = data.get('extra', lambda f: {})(f)
+
+        # if there is no filter class, exit early
+        if not filter_class:
+            return None, {}
+
+        # perform lookup specific checks
+        if lookup_type == 'exact' and f.choices:
+            return ChoiceFilter, {'choices': f.choices}
+
+        if lookup_type == 'isnull':
+            data = try_dbfield(DEFAULTS.get, models.BooleanField)
+
+            filter_class = data.get('filter_class')
+            params = data.get('extra', lambda f: {})(f)
+            return filter_class, params
+
+        if lookup_type == 'in' or lookup_type == 'not_in':
+            class ConcreteInFilter(BaseInFilter, filter_class):
+                pass
+            ConcreteInFilter.__name__ = cls._csv_filter_class_name(
+                filter_class, lookup_type
+            )
+
+            return ConcreteInFilter, params
+
+        if lookup_type == 'range':
+            class ConcreteRangeFilter(BaseRangeFilter, filter_class):
+                pass
+            ConcreteRangeFilter.__name__ = cls._csv_filter_class_name(
+                filter_class, lookup_type
+            )
+
+            return ConcreteRangeFilter, params
+
+        return filter_class, params

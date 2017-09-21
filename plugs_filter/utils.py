@@ -10,7 +10,7 @@ LOOKUP_TABLE = {
     fields.AutoField : ['exact', 'gt', 'lt', 'gte', 'lte', 'in'],
     fields.IntegerField : ['exact', 'gt', 'lt', 'in'],
     fields.DecimalField : ['exact', 'gt', 'lt', 'in'],
-    fields.CharField : ['exact', 'contains', 'icontains'],
+    fields.CharField : ['exact', 'contains', 'icontains', 'in', 'not_in'],
     fields.DateTimeField: ['exact', 'gt', 'lt', 'gte', 'lte'],
     fields.BooleanField: ['exact', 'in'],
     fields.TextField : ['exact', 'contains', 'icontains']
