@@ -17,6 +17,12 @@ def get_view_model(cls):
         assert hasattr(cls, 'auto_filters_model'), msg
         return cls.auto_filters_model
 
+def get_auto_filters_fields(cls, view_model):
+    if cls.auto_filters_fields == '__all__':
+        return [field.name for field in view_model._meta.get_fields()]
+    else:
+        return cls.auto_filters_fields
+
 def auto_filters(cls):
     """
     Adds a dynamic filterclass to a viewset
@@ -28,13 +34,19 @@ def auto_filters(cls):
         ...
         auto_filters_fields('id', 'location', 'category')
     """
+    view_model = get_view_model(cls)
+
+    # check if auto_filters_fields attribute exists
     msg = 'Viewset must have auto_filters_fields set when using auto_filters decorator'
     assert hasattr(cls, 'auto_filters_fields'), msg
     dict_ = {}
-    for auto_filter in getattr(cls, 'auto_filters_fields'):
+
+    auto_filters_fields = get_auto_filters_fields(cls, view_model)
+
+    for auto_filter in auto_filters_fields:
         dict_[auto_filter] = AutoFilters(name=auto_filter)
+
     # create the inner Meta class and then the filter class
-    view_model = get_view_model(cls)
     dict_['Meta'] = type('Meta', (object, ), {'model': view_model, 'fields': ()})
     filter_class = type('DynamicFilterClass', (FilterSet, ), dict_)
     cls.filter_class = filter_class
