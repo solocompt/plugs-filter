@@ -44,6 +44,7 @@ class Meta(filterset.FilterSetMetaclass):
                 for lookup_expr in utils.lookups_for_field(field):
                     if lookup_expr not in filter_exclusion:
                         new_filter = cls.filter_for_field(field, filter_.name, lookup_expr)
+                        # by convention use field name for filters with exact lookup_expr
                         if lookup_expr != 'exact':
                             filter_name = LOOKUP_SEP.join([name, lookup_expr])
                         else:
