@@ -6,14 +6,14 @@ from django.db.models import fields
 
 LOOKUP_TABLE = {
     # for now we are going to assume that foreign keys are always ints
-    fields.related.ForeignKey : ['gt', 'lt', 'gte', 'lte', 'in'],
-    fields.AutoField : ['gt', 'lt', 'gte', 'lte', 'in'],
-    fields.IntegerField : ['gt', 'lt', 'in'],
-    fields.DecimalField : ['gt', 'lt', 'in'],
-    fields.CharField : ['contains', 'icontains'],
-    fields.DateTimeField: ['gt', 'lt'],
-    fields.BooleanField: ['in'],
-    fields.TextField : ['contains', 'icontains']
+    fields.related.ForeignKey : ['exact', 'gt', 'lt', 'gte', 'lte', 'in'],
+    fields.AutoField : ['exact', 'gt', 'lt', 'gte', 'lte', 'in'],
+    fields.IntegerField : ['exact', 'gt', 'lt', 'in'],
+    fields.DecimalField : ['exact', 'gt', 'lt', 'in'],
+    fields.CharField : ['exact', 'contains', 'icontains'],
+    fields.DateTimeField: ['exact', 'gt', 'lt', 'gte', 'lte'],
+    fields.BooleanField: ['exact', 'in'],
+    fields.TextField : ['exact', 'contains', 'icontains']
 }
 
 def lookups_for_field(model_field):
