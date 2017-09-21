@@ -17,11 +17,17 @@ def get_view_model(cls):
         assert hasattr(cls, 'auto_filters_model'), msg
         return cls.auto_filters_model
 
-def get_auto_filters_fields(cls, view_model):
-    if cls.auto_filters_fields == '__all__':
-        return [field.name for field in view_model._meta.get_fields()]
+def get_model_fields(model):
+    return [field.name for field in model._meta.get_fields()]
+
+def get_auto_filters_fields(cls, model):
+    if hasattr(cls, 'auto_filters_fields'):
+        if cls.auto_filters_fields == '__all__':
+            return get_model_fields(model)
+        else:
+            return cls.auto_filters_fields
     else:
-        return cls.auto_filters_fields
+        return set(get_model_fields(model)) - set(cls.auto_filters_exclude)
 
 def auto_filters(cls):
     """
@@ -34,13 +40,12 @@ def auto_filters(cls):
         ...
         auto_filters_fields('id', 'location', 'category')
     """
-    view_model = get_view_model(cls)
-
-    # check if auto_filters_fields attribute exists
-    msg = 'Viewset must have auto_filters_fields set when using auto_filters decorator'
-    assert hasattr(cls, 'auto_filters_fields'), msg
+    msg = 'Viewset must have auto_filters_fields or auto_filters_exclude attribute when using auto_filters decorator'
+    if not hasattr(cls, 'auto_filters_fields') and not hasattr(cls, 'auto_filters_exclude'):
+        raise AssertionError(msg)
     dict_ = {}
 
+    view_model = get_view_model(cls)
     auto_filters_fields = get_auto_filters_fields(cls, view_model)
 
     for auto_filter in auto_filters_fields:
