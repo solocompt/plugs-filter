@@ -1,20 +1,9 @@
 """
 Plugs core utils
 """
+from plugs_filter.settings import plugs_filter_settings
 
-from django.db.models import fields
-
-LOOKUP_TABLE = {
-    # for now we are going to assume that foreign keys are always ints
-    fields.related.ForeignKey : ['exact', 'gt', 'lt', 'gte', 'lte', 'in'],
-    fields.AutoField : ['exact', 'gt', 'lt', 'gte', 'lte', 'in'],
-    fields.IntegerField : ['exact', 'gt', 'lt', 'in'],
-    fields.DecimalField : ['exact', 'gt', 'lt', 'in'],
-    fields.CharField : ['exact', 'contains', 'icontains', 'in', 'not_in'],
-    fields.DateTimeField: ['exact', 'gt', 'lt', 'gte', 'lte'],
-    fields.BooleanField: ['exact', 'in'],
-    fields.TextField : ['exact', 'contains', 'icontains']
-}
+LOOKUP_TABLE = plugs_filter_settings['LOOKUPS_FOR_FIELDS']
 
 def lookups_for_field(model_field):
     """
