@@ -16,7 +16,8 @@ DEFAULTS = {
         fields.CharField : ['exact', 'contains', 'icontains', 'in'],
         fields.DateTimeField: ['exact', 'gt', 'lt', 'gte', 'lte'],
         fields.BooleanField: ['exact', 'in'],
-        fields.TextField : ['exact', 'contains', 'icontains']
+        fields.TextField : ['exact', 'contains', 'icontains'],
+        fields.GenericIPAddressField : ['exact', 'contains', 'icontains']
     }
 }
 

@@ -39,18 +39,18 @@ class Meta(filterset.FilterSetMetaclass):
         opts = cls._meta
         base_filters = cls.base_filters.copy()
         cls.base_filters.clear()
-        for name, filter_ in six.iteritems(base_filters):
+        for field_name, filter_ in six.iteritems(base_filters):
             if isinstance(filter_, AutoFilters):
-                field = filterset.get_model_field(opts.model, filter_.name)
+                field = filterset.get_model_field(opts.model, filter_.field_name)
                 filter_exclusion = filter_.extra.pop('drop', [])
                 for lookup_expr in utils.lookups_for_field(field):
                     if lookup_expr not in filter_exclusion:
-                        new_filter = cls.filter_for_field(field, filter_.name, lookup_expr)
+                        new_filter = cls.filter_for_field(field, filter_.field_name, lookup_expr)
                         # by convention use field name for filters with exact lookup_expr
                         if lookup_expr != 'exact':
-                            filter_name = LOOKUP_SEP.join([name, lookup_expr])
+                            filter_name = LOOKUP_SEP.join([field_name, lookup_expr])
                         else:
-                            filter_name = name
+                            filter_name = field_name
                         cls.base_filters[filter_name] = new_filter
 
     def __new__(cls, name, bases, attrs):

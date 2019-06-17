@@ -56,7 +56,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        'django_filter>=1.0.4,<2.0.0'
+        'django_filter>=2.1.0,<3.0.0'
     ],
     license="MIT",
     zip_safe=False,
