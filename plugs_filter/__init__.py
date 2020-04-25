@@ -1,3 +1,3 @@
-__version__ = '0.3.0-alpha'
+__version__ = '0.3.1'
 
 from plugs_filter import lookups
